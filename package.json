@@ -1,0 +1,17 @@
+{
+  "name": "dashbord",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Government scheme tracking platform",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "backend": "npm --prefix backend run dev",
+    "frontend": "npm --prefix frontend run dev",
+    "lint": "npm --prefix backend run lint && npm --prefix frontend run lint",
+    "test": "npm --prefix backend run test",
+    "build": "npm --prefix backend run build && npm --prefix frontend run build"
+  }
+}

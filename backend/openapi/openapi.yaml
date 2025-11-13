@@ -1,0 +1,129 @@
+openapi: 3.1.0
+info:
+  title: Maharashtra Scheme Dashboard API
+  version: 0.1.0
+servers:
+  - url: https://api.example.com
+    description: Production server
+  - url: http://localhost:4000
+    description: Local development server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+    Application:
+      type: object
+      properties:
+        _id:
+          type: string
+        schemeId:
+          type: string
+        status:
+          type: object
+          properties:
+            value:
+              type: string
+            at:
+              type: string
+              format: date-time
+paths:
+  /api/auth/login:
+    post:
+      tags: [Auth]
+      summary: Login with email and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successful authentication
+  /api/applications:
+    get:
+      tags: [Applications]
+      security: [{ bearerAuth: [] }]
+      summary: List applications with filters
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+          description: Comma separated status filters
+      responses:
+        '200':
+          description: Paginated applications
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Pagination'
+                  - type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Application'
+  /api/analytics/kpis:
+    get:
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      summary: Fetch KPI metrics
+      responses:
+        '200':
+          description: KPI metrics
+  /api/analytics/applications/by-month:
+    get:
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      summary: Applications trend
+      responses:
+        '200': { description: Trend data }
+  /api/analytics/status-pie:
+    get:
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      summary: Status donut data
+      responses:
+        '200': { description: Status data }
+  /api/analytics/allocations/by-department:
+    get:
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      summary: Allocation vs utilization by department
+      responses:
+        '200': { description: Allocation data }
+  /api/analytics/treemap:
+    get:
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      summary: Treemap data hierarchy
+      responses:
+        '200': { description: Treemap data }
+  /api/analytics/district-heatmap:
+    get:
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      summary: District heatmap metrics
+      responses:
+        '200': { description: Heatmap data }
