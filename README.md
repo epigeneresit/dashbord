@@ -16,4 +16,10 @@ npm run backend
 npm run frontend
 ```
 
+> **Troubleshooting:** The project depends on public npm packages for both the
+> API and frontend workspaces. In environments without outbound npm registry
+> access these installation and start commands will fail with `npm ERR! 403`
+> errors. Ensure the registry is reachable or mirror the required packages
+> before attempting to run the services.
+
 See `backend/README.md` and `frontend/README.md` for detailed instructions.
